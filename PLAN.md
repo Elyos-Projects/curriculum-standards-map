@@ -1,7 +1,8 @@
 # PLAN — curriculum-standards-map
 
-> Status: Draft · Version: 0.1.0 · Last updated: 2026-06-28 · Owner: TBD (maintainer) · Lane: donated
+> Status: Draft · Version: 0.2.0 · Last updated: 2026-06-29 · Owner: TBD (maintainer) · Lane: donated
 > Risk tier: **low** (accuracy-sensitive) · Deliverable family: open crosswalk **dataset** + tooling
+> v0.2 merges the competitive & improvement analysis (see Changelog at end).
 
 ## Executive summary
 
@@ -24,6 +25,15 @@ builds-toward), an alignment *strength*, the *evidence* that justifies it, full 
 both the OER and the standard, and a record of the **educator who reviewed it**. The crosswalk is
 published as CSV + JSON + a schema.org `AlignmentObject` / CASE-compatible export so it can be
 ingested by any learning platform, OER repository, or district catalog.
+
+The crosswalk has **two record types** sharing the same gates and provenance model: the primary
+**OER→standard** alignment record (above), and a **standard↔standard association** record that links
+a standard in one framework to a related standard in another (e.g. CCSS↔a state framework, or
+US↔international), or to a superseding version of the same framework. The association layer is what
+makes the project a true *crosswalk* (not only an OER discovery index), and it is the most defensible,
+hardest-to-copy asset in the landscape (see Competitive landscape & differentiation). Both record
+types are **reviewed proposals, not authoritative facts**: every association, like every alignment,
+is an expert judgment carrying confidence and provenance, never an assertion of official equivalence.
 
 The **deliverable is the mapping, not the content.** We do not host, copy, modify, or republish
 OER materials, and we do not reproduce the full text of copyrighted standards frameworks. We link
@@ -91,8 +101,14 @@ plausible consumer are identified.
   non-skippable, auditable gate.
 - Make **educator review** a non-skippable gate, with an honest, published **alignment-confidence
   model** so consumers can filter by reviewed strength.
-- Reference standards by **stable identifier** (CASE GUID / ASN URI) so the crosswalk survives
-  standards re-publication and is interoperable, and so we avoid reproducing copyrighted text.
+- Reference standards by **stable identifier** (CASE GUID **primary, required where one exists**; ASN
+  URI optional legacy capture) so the crosswalk survives standards re-publication and is interoperable,
+  and so we avoid reproducing copyrighted text.
+- Deliver an open **standard↔standard association** layer (the crosswalk proper) — expert-reviewed
+  cross-framework / cross-version links carrying confidence and provenance, not authoritative equivalence.
+- Ship a documented **vocabulary-mapping crosswalk** (our `type`/`strength` → schema.org
+  `alignmentType` → CASE `CFAssociationType`) so exports are semantically interoperable, not merely
+  syntactically valid.
 - Ship the crosswalk in formats real consumers ingest (CSV, JSON, CASE export, schema.org) with a
   validator and a public "what's covered / what's missing" coverage ledger.
 
@@ -149,8 +165,13 @@ the gate artifacts committed. "Delivered" = a named consumer has ingested or pub
 **In scope**
 - The **alignment crosswalk dataset**: educator-reviewed records linking OER resources to standards
   by identifier, with type, strength, evidence, provenance, and reviewer.
-- The **alignment data model + authoring template** and its interoperable exports (CSV, JSON,
-  schema.org `AlignmentObject`, CASE-compatible JSON, ASN URI references).
+- The **standard↔standard association dataset**: expert-reviewed `StandardAssociation` records linking
+  a standard to a related/equivalent/superseding standard in another framework or version
+  (`exactMatch | isRelatedTo | isPartOf | isEquivalentTo | supersedes`), under the same dual gate and
+  review — published as reviewed proposals, never authoritative equivalence claims.
+- The **alignment data model + authoring template** (both record types) and its interoperable exports
+  (CSV, JSON, schema.org `AlignmentObject`, CASE-compatible JSON, ASN URI references), including the
+  documented vocabulary-mapping table to schema.org `alignmentType` and CASE `CFAssociationType`.
 - **Licence/provenance triage** for OER sources and **framework-terms triage** for standards
   frameworks, each recorded as a committed gate artifact.
 - **AI-assisted candidate generation**: an OER ingest + candidate-alignment proposer that emits
@@ -175,13 +196,24 @@ and (b) have stable machine-readable identifiers:
   (Crown copyright under the **Open Government Licence**, text reproducible with attribution);
   **Australian Curriculum** (ACARA, **CC-BY-4.0**, text reproducible with attribution); **Common
   Core State Standards** (public licence permits use/reference with attribution — referenced by
-  identifier; reproduction of statement text only as the licence allows). **NGSS** is *deferred*
-  until its reproduction/reference terms are confirmed in writing (its copyright is more
-  restrictive — see Open questions), but referencing by ASN/CASE identifier is evaluated under the
-  framework-terms gate.
+  identifier; reproduction of statement text permitted with the mandated © notice, see Data &
+  compliance). **NGSS** is *gated pending written confirmation* but is now expected to be **admissible
+  rather than excluded**: its public terms grant non-profit education entities a broad right to copy,
+  reproduce, adapt and rearrange the NGSS (the binding constraints are the WestEd **trademark**/no-
+  confusion rule, a probable **commercial-use** limitation, and attribution). NGSS already exists in
+  ASN and CASE form, easing identifier work. We run the framework-terms gate to confirm before
+  mapping; the earlier "deferred — likely no reproduction" stance is corrected (see Open questions).
 - **OER sources (CC-BY unless noted):** OpenStax, Illustrative Mathematics, EngageNY/Eureka
   (CC-BY), PhET Interactive Simulations (CC-BY), Siyavula (CC-BY), LibreTexts (per-page CC, must be
   checked per resource). **CK-12** is CC-BY-**NC** and is handled only under the NC policy.
+- **"Use-but-not-adapt" tier (NC / ND-restricted sources).** Because the crosswalk only *links and
+  references* OER and never adapts or republishes its body, a **no-derivatives (ND)** or
+  non-commercial (NC) restriction does not by itself bar *referencing* the resource. Such sources
+  (e.g. MIT OpenCourseWare and other NC/ND-licensed materials — exact licence verified per source at
+  the gate, never assumed) are placed in a labelled **use-but-not-adapt** tier: the alignment record
+  carries `commercialUse:false` and/or `permitsDerivatives:false` and a downstream-use caveat so a
+  consumer knows the OER body may be linked but not modified or commercially redistributed. This tier
+  is admitted only under the same dual gate; anything whose licence cannot be verified is excluded.
 
 ## Solution approach & architecture
 
@@ -194,17 +226,24 @@ OER content.
    it) *and* verify the framework's terms permit referencing by identifier (and, separately,
    whether statement text may be reproduced). PASS recorded as a committed artifact; any doubt →
    FLAG/EXCLUDE.
-2. **Identifier resolution** — resolve the framework's standards to canonical identifiers (CASE
-   GUIDs from the CASE Network, and/or ASN URIs). Build/confirm the standards skeleton from the
-   framework's *official* machine-readable source where one exists (CASE registry, ACARA/DfE
-   open data) — never by scraping copyrighted PDFs.
+2. **Identifier resolution** — resolve the framework's standards to canonical identifiers. **CASE
+   GUID is primary and required where one exists; ASN URI is optional legacy capture** (recorded when
+   present — useful for older NGSS/CCSS URIs and pre-CASE frameworks — but never the gating identifier).
+   Where no CASE GUID exists, fall back to `statementId` code + framework version. Seed standards
+   skeletons directly from the **CASE Network's free 50-state K-12 ELA/Math registry** and other
+   *official* machine-readable sources (CASE registry, ACARA/DfE open data) — never by scraping
+   copyrighted PDFs. Because CASE GUIDs are minted **per-publication**, the gate records *which*
+   publication's GUID is canonical when a framework has multiple, and a re-publication triggers a
+   re-resolution/drift task (see Risks; identifiers drift).
 3. **OER ingest** — fetch OER *metadata and openly-licensed content text* from the canonical
    source under a bounded-access protocol (see below); extract topic, grade, subject, learning
    objectives. We index; we do not store the full content as a republished copy.
 4. **Candidate alignment proposal (AI-assisted)** — for each OER unit, the proposer emits candidate
    `(oer, standard)` alignments, each with: alignment *type*, a *confidence* score, and a short
-   *evidence* rationale (which part of the OER addresses which part of the standard). Output is a
-   review queue, not a published record.
+   *evidence* rationale (which part of the OER addresses which part of the standard). It may also
+   propose candidate **standard↔standard associations** for expert review. Output is a review queue,
+   not a published record. (See "Claude API leverage" below for where the model assists and the hard
+   limits on what it must never decide.)
 5. **Educator review (mandatory gate)** — a qualified reviewer confirms/edits/rejects each
    candidate, sets the final alignment *type* and *strength*, and signs off. Only reviewed records
    advance. A second-reviewer audit samples shipped records for precision.
@@ -252,6 +291,49 @@ AlignmentRecord {
 }
 ```
 
+**Second record type: `StandardAssociation` (the standard↔standard crosswalk layer).** Reuses the
+same dual gate, review gate, provenance, and confidence model; it links two standards rather than an
+OER to a standard.
+
+```
+StandardAssociation {
+  id
+  from { frameworkId, statementId, caseGuid, asnUri, frameworkTerms{...} }
+  to   { frameworkId, statementId, caseGuid, asnUri, frameworkTerms{...} }
+  associationType,           // exactMatch | isEquivalentTo | isRelatedTo | isPartOf | supersedes
+                             //   (maps to CASE CFAssociationType + schema.org; see vocab table)
+  strength, coverage, evidence, aiConfidence,
+  review { status, reviewedBy, reviewerQualification, reviewedAt, auditedBy },
+  notEndorsement: true,      // an expert-reviewed PROPOSAL, never an official equivalence claim
+  outputLicense              // CC-BY-4.0
+}
+```
+
+**Record-level "judgment, not fact" metadata (carried into every export).** `strength`, `coverage`,
+`aiConfidence`, `reviewerQualification`, and an explicit `notEndorsement` flag survive into the
+CASE/schema.org/CSV projections — not only the dataset-level disclaimer — so a downstream consumer
+**cannot silently render a reviewed proposal as authoritative fact**. `aiConfidence` is recorded
+alongside the proposer **model + version** (in provenance) and is explicitly **not comparable across
+model versions**; it is advisory triage metadata only.
+
+**Vocabulary-mapping table (so "schema.org export" is semantic, not just syntactic).** The model ships
+a documented crosswalk of our vocab → external vocabularies, enforced by the exporters:
+
+| Our `type` / `associationType` | schema.org `alignmentType` | CASE `CFAssociationType` |
+| --- | --- | --- |
+| `teaches` | `teaches` | `ext:teaches` / `isRelatedTo` |
+| `assesses` | `assesses` | `ext:assesses` / `isRelatedTo` |
+| `practices` | `teaches` (+ note) | `isRelatedTo` |
+| `prerequisite` / `builds-toward` | `requires` | `isRelatedTo` / `precedes` |
+| `exactMatch` (assoc.) | — (`AlignmentObject` target) | `exactMatch` |
+| `isEquivalentTo` (assoc.) | — | `exactMatch` / `isRelatedTo` |
+| `isRelatedTo` (assoc.) | — | `isRelatedTo` |
+| `isPartOf` (assoc.) | — | `isChildOf` / `isPartOf` |
+| `supersedes` (assoc.) | — | `replacedBy` (inverse) |
+
+(The exact CASE association terms are confirmed against the pinned CASE v1.1 vocabulary in the
+exporter task; the table is the single source of truth so the four export formats never diverge.)
+
 **Alignment-confidence model (published, so consumers can trust-filter).**
 - `exact` — the OER unit's objective maps one-to-one to the full standard statement.
 - `strong` — the OER substantively teaches/assesses the standard; minor scope difference.
@@ -268,6 +350,37 @@ AlignmentRecord {
 - The crosswalk stores **links + metadata + short evidence**, not the OER corpus.
 - Respect each source's robots/Terms and rate limits; stop and flag on access restrictions.
 
+**Claude API leverage (donated lane — all output lands in a review queue, never auto-published).**
+Where an AI session genuinely accelerates the work, framed so the human gate is never bypassed:
+- **Candidate-alignment proposer with rationale** — given OER unit text + a standard statement, draft
+  `(oer, standard)` candidates with `type`, `coverage`, a 0..1 confidence, and a short *evidence*
+  rationale ("section 3 develops adding fractions with unlike denominators → CCSS.MATH.CONTENT.5.NF.B.1").
+  This is the core M2 throughput accelerator and directly attacks reviewer time.
+- **CASE / schema.org `AlignmentObject` generation + validation** — draft the JSON-LD / CASE-compatible
+  projection from the canonical record and pre-check it against the pinned spec, so humans verify
+  rather than author.
+- **Coverage / gap analysis** — over a framework skeleton, cluster which statements have zero/weak OER
+  coverage and summarise the negative-space ledger into human-readable "what to author next."
+- **(Secondary) Licence/terms triage assist** — extract licence id, derivative/commercial flags, and
+  the attribution string from a source's licence page into the gate artifact *for human sign-off*.
+- **(Secondary) Standard↔standard candidate associations** — propose `exactMatch`/`isRelatedTo` links
+  across frameworks for expert review.
+
+**What the model must NOT decide (hard guardrails, encoded in the workflow):**
+- **The alignment/association judgment is the educator's, not the model's.** `aiConfidence` is advisory
+  triage metadata; the ship signal is `review.status: accepted`. An unreviewed AI alignment never ships.
+- **Standards IP is human-verified.** Claude may *draft* a licence/terms reading; a qualified
+  licence/terms reviewer must confirm `permitsReference` / `permitsTextReproduction` against the actual
+  licence. No mapping proceeds on a model's legal opinion.
+- **No fabricated standards, codes, GUIDs, or statement text.** Every `statementId` / CASE GUID / ASN
+  URI must resolve against the official registry; the validator rejects anything that doesn't. The model
+  must not "guess" a plausible code or paraphrase a standard as if verbatim.
+- **Crosswalks (both record types) are reviewed *proposals*, not authoritative facts** — and the
+  record/export says so (`notEndorsement`). The model must not assert endorsement, merit, or
+  "certified aligned."
+- **Automation-bias countermeasure** — because a confident proposer nudges reviewers to over-accept,
+  reviewers must record independent evidence and the blind precision audit measures real correctness.
+
 **Tech stack.** TypeScript, ESM, pnpm workspaces (Elyos convention). The data model, validator,
 exporters, and candidate proposer are small Node packages with minimal dependencies. Records are
 authored/stored as JSON + CSV; exports include schema.org JSON-LD and CASE JSON. No runtime
@@ -278,20 +391,69 @@ service; everything runs locally or in CI. The AI candidate-proposer runs in the
 **Pinned interop spec versions** (recorded in the model's `specVersions`, bumped only by a
 deliberate task):
 - **1EdTech CASE** v1.1 (Competencies & Academic Standards Exchange) for framework/standard
-  identifiers and exchange.
-- **schema.org** `AlignmentObject` / `LearningResource` (current) for `educationalAlignment`.
-- **ASN** URIs for standards identity where CASE GUIDs are unavailable.
+  identifiers, the `CFAssociationType` vocabulary, and exchange — the **primary** identity layer
+  (CASE Network holds 400+ frameworks incl. free authenticated 50-state ELA/Math).
+- **schema.org** `AlignmentObject` / `LearningResource` (current) for `educationalAlignment` and the
+  `alignmentType` vocabulary.
+- **ASN** URIs as an **optional legacy fallback** for standards identity where CASE GUIDs are
+  unavailable (now D2L-operated with limited recent investment; captured when present, never gated on).
 - **LRMI** (Learning Resource Metadata Initiative) vocabulary alignment for educational metadata.
 
-**Key decisions (locked for v0.1.0).**
-- **Reference standards by identifier (CASE GUID / ASN URI), not by reproducing text.** Text is
-  included only where the framework licence explicitly permits and only the official statement.
-- **Canonical-record-first**: one `AlignmentRecord`; CSV/JSON/CASE/schema.org are projections.
-- **Two blocking gates** (dual licence/terms, and educator review) encoded as committed artifacts.
+**Key decisions (locked for v0.2.0).**
+- **Reference standards by identifier**, with **CASE GUID primary/required-where-available** and ASN
+  URI optional legacy capture; not by reproducing text. Text is included only where the framework
+  licence explicitly permits, and only the official statement (with any mandated © notice as a
+  required field — see CCSS in Data & compliance).
+- **Two record types, one model**: `AlignmentRecord` (OER→standard) and `StandardAssociation`
+  (standard↔standard), sharing gates, review, and provenance.
+- **Canonical-record-first**: one canonical record per type; CSV/JSON/CASE/schema.org are projections,
+  driven by a single documented vocabulary-mapping table so the formats never diverge.
+- **Two blocking gates** (dual licence/terms, and educator/expert review) encoded as committed artifacts.
 - **Crosswalk dataset licensed CC-BY-4.0**; **code MIT**. (CC0 considered for max interop but
-  CC-BY chosen to preserve the attribution/provenance chain to reviewers and sources.)
-- **No quality/merit claims** — alignment only.
-- **Standards skeletons sourced from official machine-readable releases**, never PDF-scraped.
+  CC-BY chosen to preserve the attribution/provenance chain to reviewers and sources; revisit if a
+  target consumer needs CC0.)
+- **No quality/merit claims** — alignment/association only; both record types ship as reviewed
+  proposals carrying `notEndorsement`, never authoritative facts.
+- **Standards skeletons sourced from official machine-readable releases** (seeded from the CASE Network
+  50-state registry where available), never PDF-scraped.
+
+## Competitive landscape & differentiation
+
+The space has a rich **identity layer**, a **paid-correlations layer**, and **platform-locked
+alignments** — but no open, cross-publisher, educator-reviewed, exportable crosswalk dataset. That gap
+is the project's reason to exist.
+
+| Project | What it is | Strength | Gap vs. our goal |
+| --- | --- | --- | --- |
+| **1EdTech CASE Network** | Free registry of standards *frameworks* in CASE format; de-facto interop spec | Authoritative, authenticated state standards; 400+ frameworks; free 50-state ELA/Math | Publishes the *standards*, not OER↔standard alignments; cross-framework associations are sparse; not a discovery dataset |
+| **Achievement Standards Network (ASN)** | Resolvable HTTP URIs for standards statements | Stable global URIs; long history; incl. NGSS/CCSS | Now D2L-owned, limited recent investment; an *identifier* service, not a living crosswalk |
+| **Common Standards Project** | Open free **API** of 50-state standards + GUIDs | Genuinely open, machine-readable, free | Standards *data*, not alignments; no educator-reviewed OER linkage; vendor-sponsored sustainability risk |
+| **Academic Benchmarks** (Instructure/Certica) | Commercial standards data **and correlations** (standard↔standard) | Has the actual correlations; powers Ed-Fi reference data | **Proprietary/paid/closed** — the thing we'd open up |
+| **Ed-Fi Alliance** | Open K-12 data-exchange standard (`LearningStandard`) | Huge install base (250+ vendors, 32 states) | A *data-exchange* model, not an OER alignment corpus; its standards reference data is Academic-Benchmarks-sourced (paid) |
+| **OER Commons / ISKME** | Large OER library with embedded CCSS/NGSS alignment + Achieve rubric | Real OER + real alignments + scale; LRMI implementer | Alignments **locked in the platform**, not an open exportable dataset; merit-rubric ≠ machine-readable records |
+| **Khan Academy / Illustrative Mathematics** | Single-publisher internal alignment of own content | High-quality, deeply curated | Single-publisher; alignments not released as an open interoperable dataset |
+| **Learning Registry** | Store-and-forward network for alignment/paradata | Pioneered open alignment-metadata exchange | Largely dormant; never produced a maintained cross-framework crosswalk |
+| **EdGraph / state DOE catalogs** | State-DOE standards portals / knowledge-graphs | Authoritative per-jurisdiction | Per-state silos; rarely OER-linked or openly exportable |
+
+**Gaps we fill / differentiators we win:**
+- **The only open, downloadable OER↔standard *dataset*** (CSV/JSON/CASE/schema.org under CC-BY) — not a
+  platform feature, a paywalled correlation, or a vendor API. Ingestible by OER Commons, Ed-Fi, any LMS.
+- **Cross-publisher, not single-publisher.** We align *across* OpenStax/IM/Khan/etc. to the *same*
+  standard — what a teacher actually needs.
+- **Provenance + confidence as first-class data.** Competitors give a binary "aligned" tag; we ship
+  `strength`, `coverage`, evidence, reviewer qualification, and a blind-audited precision number.
+- **An open standard↔standard crosswalk layer.** Academic Benchmarks *sells* correlations; CASE has thin
+  associations. An open CCSS↔state and US↔international crosswalk is genuinely scarce — the defensible,
+  hard-to-copy asset.
+- **A published negative-space coverage ledger** (standards with *zero* aligned OER) — no competitor
+  exposes the gaps; it is a uniquely useful funding/authoring signal for OER orgs.
+- **Honest dual-IP provenance** (OER licence *and* framework terms, snapshotted) — most alignment tools
+  never record the standards-IP side at all, which makes the dataset safer to reuse downstream.
+
+**Single strongest differentiator:** *the only open, machine-readable, multi-framework crosswalk
+carrying per-alignment provenance + confidence + a CASE-format exporter — published as expert-reviewed
+proposals, not authoritative facts.* Registries (CASE/ASN) give identities but not alignments; vendors
+(Academic Benchmarks) sell correlations; platforms (OER Commons, Khan) keep alignments inside a product.
 
 ## Data, licensing & compliance
 
@@ -303,7 +465,10 @@ content *and* standards-framework text), so both are treated conservatively.
 - **CC-BY 4.0** (and compatible versions) — accepted; attribution required and recorded.
 - **CC-BY-SA 4.0** — accepted; share-alike noted. The crosswalk *links* to (does not incorporate)
   the OER, so the crosswalk record itself is not a derivative of the OER body; share-alike applies
-  to reused OER text, which we do not redistribute. Recorded per source.
+  to reused OER text, which we do not redistribute. Recorded per source. The one place OER text *is*
+  incorporated is the short **evidence snippet** quoted to justify an alignment — these are kept short,
+  attributed, and within fair-use/licence bounds (per the bounded-access protocol), so they do not
+  trigger share-alike on the dataset.
 - **CC-BY-NC** (e.g. CK-12) — accepted **only** under the written NC policy (`policy`), because the
   crosswalk is a non-commercial public-commons artifact but downstream commercial consumers exist;
   default is *flag/escalate*, and any NC mapping records `commercialUse:false` and a downstream-use
@@ -327,15 +492,26 @@ Known starting positions (to be re-verified in writing at the framework-terms ga
     reproduction permitted with attribution. `permitsTextReproduction: true`.
   - **Australian Curriculum (ACARA)** — **CC-BY-4.0**; reference and reproduction permitted with
     attribution. `permitsTextReproduction: true`.
-  - **Common Core State Standards (CCSS)** — public licence permits use with attribution; we
-    reference by identifier and reproduce statement text **only** to the extent the CCSS public
-    licence allows, with the required NGA/CCSSO attribution. Default: reference by ID; reproduce
-    only the official statement code/text where clearly permitted. `permitsTextReproduction`
-    recorded per the licence reading.
-  - **NGSS** — **deferred**: copyright held by Achieve; reproduction terms are more restrictive.
-    We do **not** reproduce NGSS text and treat NGSS mapping as gated on written confirmation that
-    referencing by identifier is acceptable (Open questions). Likely `permitsReference: true`,
-    `permitsTextReproduction: false` — but unconfirmed, so excluded until verified.
+  - **Common Core State Standards (CCSS)** — the CCSS **public licence** grants a limited,
+    non-exclusive, royalty-free licence to copy, publish, distribute, and display the standards,
+    **provided** the verbatim "© Copyright 2010 National Governors Association Center for Best
+    Practices and Council of Chief State School Officers. All rights reserved." notice and attribution
+    appear (it covers the standards, not third-party examples). So `permitsTextReproduction` is
+    plausibly **`true`** for CCSS statement text. **Operational limit:** if a record carries CCSS
+    `statementText`, the exact © notice string is a **required, validator-enforced field**, and the
+    notice text is stored in the gate artifact (not merely "attribution recorded"). The plan's earlier
+    "ID + link only, reproduce only where clearly permitted" default was *safe* but needlessly
+    conservative; confirm and reproduce-with-notice where the licence allows.
+  - **NGSS** — **gated pending written confirmation, expected admissible (not excluded).** Copyright in
+    the NGSS is held by the **National Academies / NAP** (Achieve only *managed* development); the
+    **"NGSS" name/logo is a WestEd trademark**. NGSS's own terms state that "states, districts, schools,
+    teachers and non-profit education entities may copy, reproduce, alter, adapt, edit, delete and
+    rearrange any and all parts of the NGSS … without permission." For a non-profit open crosswalk,
+    text reproduction is therefore **very likely permitted**; the binding constraints are (a) the WestEd
+    trademark/no-confusion rule, (b) a probable commercial-use limitation (interacts with our NC
+    handling), and (c) attribution. Expected `permitsReference: true`, `permitsTextReproduction: true`
+    (non-profit) — confirmed in writing at the framework-terms gate before mapping. This **corrects** the
+    v0.1 rationale ("Achieve copyright / likely no reproduction").
 Any framework whose `permitsReference` cannot be confirmed → **excluded**. Where
 `permitsTextReproduction` is false, the record omits `statementText` and carries the identifier +
 official source link only.
@@ -414,13 +590,18 @@ recorded. Producing reviewed records is *necessary but not sufficient*; **delive
   readable identifiers (recommended pilot: **Australian Curriculum (CC-BY) × OpenStax (CC-BY)** or
   **England National Curriculum (OGL) × a CC-BY OER** for one subject/grade band), so a real
   *delivered* outcome is reachable via a self-serve open release even before a consumer is secured.
-- Exit criteria: (1) `AlignmentRecord` model + authoring template published; (2) dual licence/terms
-  gate checklist (incl. NC policy + framework-terms checks) exists and is applied to the pilot
-  slice; (3) schema validator + one exporter (schema.org `AlignmentObject`) working in CI with
-  golden fixtures; (4) ≥ 50 alignment records for the pilot slice **educator-reviewed and accepted**
-  with gate artifacts; (5) the pilot published as an open CC-BY release with a coverage ledger — and
+- Exit criteria: (1) `AlignmentRecord` **and** `StandardAssociation` model + authoring template
+  published, including the vocabulary-mapping table (our vocab → schema.org `alignmentType` → CASE
+  `CFAssociationType`); (2) dual licence/terms gate checklist (incl. NC policy + framework-terms
+  checks, and the CCSS © notice as a required field) exists and is applied to the pilot slice;
+  (3) schema validator + one exporter (schema.org `AlignmentObject`) working in CI with golden
+  fixtures; (4) ≥ 50 alignment records for the pilot slice **educator-reviewed and accepted** with
+  gate artifacts; (5) the pilot published as an open CC-BY release with a coverage ledger — and
   **delivered** to a consumer if one materialises, else released self-serve with the blocker
-  surfaced; (6) ≥ 1 partner-outreach thread opened; (7) baseline "time-to-find" measured.
+  surfaced; (6) ≥ 1 partner-outreach thread opened; (7) baseline "time-to-find" **and** a baseline
+  **human-review-minutes-per-record** figure measured (feeds roster sizing + the M2 throughput target);
+  (8) standards skeleton for the pilot **seeded from the CASE Network registry** (or official open
+  data), not PDF-scraped.
 
 **M1 — Gates hardened + interop exports + first delivery**
 - Goal: make both gates rigorous, add CASE-compatible export + identifier resolution, get real
@@ -446,6 +627,20 @@ recorded. Producing reviewed records is *necessary but not sufficient*; **delive
   cumulatively, spanning ≥ 2 frameworks and ≥ 2 subjects; (3) staleness/refresh process documented
   (handles OER moving/changing and standards re-publication); (4) a steward identified for ongoing
   consumer liaison and outcome tracking; (5) usability-test shows ≥ 50% time-to-find reduction.
+
+**v0.2 optimizations woven across the roadmap** (from the competitive analysis; tracked as tasks in
+`TASKS.md`):
+- **M0:** add the `StandardAssociation` record type + vocabulary-mapping table to the model; seed
+  skeletons from the **CASE 50-state registry**; make CASE GUID primary/ASN optional; record the
+  per-record review-minutes baseline; make the CCSS © notice a validator-enforced field.
+- **M1:** ship a tiny **"ingest contract" + sample importer** (one for Ed-Fi `LearningStandard`, one
+  for schema.org `educationalAlignment`) so a consuming partner's lift is near-zero — directly attacks
+  the unsecured-partner / "delivered, not merged" risk; carry `confidence`/`coverage`/`notEndorsement`
+  into every export; **un-defer NGSS** via the framework-terms gate (corrected IP premise).
+- **M2:** stand up the first **standard↔standard association** batch for expert review alongside the
+  scaled OER alignments; throughput target measured against the M0 review-minutes baseline.
+- **M3:** add a public **link-rot / GUID-drift dashboard** generated in CI (OER URL resolves + CASE
+  GUID resolves), turning the staleness risk into a visible, fixable signal and a reuse-trust signal.
 
 Dependencies: M1 depends on M0's model + gates; M2's proposer depends on M1's schema + exports;
 M3 depends on a body of delivered records from M1–M2.
@@ -484,8 +679,9 @@ mapping task until it passes the dual licence/terms gate.
   `AlignmentObject`/`LearningResource`, **LRMI**. Versions recorded in `specVersions`, bumped only
   via a deliberate task.
 - **Standards frameworks (terms-gated before use):** England National Curriculum (OGL), Australian
-  Curriculum (ACARA, CC-BY-4.0), Common Core State Standards (public licence), NGSS (deferred).
-  Machine-readable identifiers via the **CASE Network** registry and **ASN**.
+  Curriculum (ACARA, CC-BY-4.0), Common Core State Standards (public licence, © notice required),
+  NGSS (gated, **expected admissible** — non-profit reproduction right; confirm at gate). Machine-
+  readable identifiers via the **CASE Network** registry (primary) and **ASN** (legacy fallback).
 - **OER sources (licence-gated before use):** OpenStax, Illustrative Mathematics, EngageNY/Eureka,
   PhET, Siyavula, LibreTexts (per-page), CK-12 (NC, policy-gated). None assumed in scope until gated.
 - **Consuming platforms (output targets):** OER Commons / ISKME, OpenStax, district catalogs, LMS
@@ -499,10 +695,10 @@ mapping task until it passes the dual licence/terms gate.
 | Risk | Likelihood | Impact | Mitigation | Owner |
 | --- | --- | --- | --- | --- |
 | Inaccurate alignment (OER claimed to teach a standard it doesn't) misleads teachers | High | High | Mandatory educator review per record; independent second-reviewer precision audit; honest confidence model; AI score never the ship signal | Educator reviewer |
-| Reproducing copyrighted standards text beyond licence terms | Medium | High | Framework-terms gate records `permitsTextReproduction`; default reference-by-identifier; reproduce only where explicitly permitted (OGL/ACARA/CCSS-as-allowed); NGSS deferred | Licence/terms reviewer |
+| Reproducing copyrighted standards text beyond licence terms | Medium | High | Framework-terms gate records `permitsTextReproduction`; default reference-by-identifier; reproduce only where explicitly permitted (OGL/ACARA/CCSS-with-mandated-©-notice/NGSS-non-profit); mandated notice strings are validator-enforced fields; gated frameworks confirmed in writing before mapping | Licence/terms reviewer |
 | Mapping an OER whose licence isn't actually open (or NC misused) | Medium | High | OER licence gate with cited URL + snapshot; NC handled only under written policy; exclude on doubt | Licence/terms reviewer |
 | No consuming partner → crosswalk produced but never used (fails "delivered") | Medium | High | M0 outreach; self-serve open release as fallback; steward role; `verifiedNeed:false` until secured | Steward |
-| Standards re-published / re-coded; identifiers drift | Medium | Medium | Reference by stable CASE GUID/ASN URI; record framework version; staleness/refresh task; resolver in CI | Maintainer |
+| Standards re-published / re-coded; identifiers drift (**CASE GUIDs are minted per-publication**, so a re-import can mint new GUIDs) | Medium | Medium | CASE GUID primary + recorded framework version; gate records which publication's GUID is canonical; re-publication triggers a re-resolution/drift task; resolver + link-rot/drift dashboard in CI | Maintainer |
 | OER content moves or changes, breaking links/evidence | Medium | Medium | Record version + retrieved date + snapshot; link-check + drift detection in refresh process | Maintainer |
 | AI proposer biases reviewers toward over-accepting (automation bias) | Medium | Medium | Proposer output framed as *candidate*; reviewers must record evidence; blind precision audit measures real correctness | Educator reviewer |
 | Scope creep into rating OER quality / recommending resources | Medium | Medium | Explicit non-goal; reviewers reject merit claims; only alignment asserted | Maintainer |
@@ -542,28 +738,55 @@ mapping task until it passes the dual licence/terms gate.
   educators can contribute reviewed alignments under the same gates (a path to scale beyond the core
   team), with the second-reviewer audit preserving precision.
 
+**Adjacent opportunities (spin-offs — noted, not committed for v0.2).** The canonical-record + dual-gate
++ review-queue + confidence model + multi-format exporter is **domain-agnostic mapping infrastructure**:
+- **Reusable crosswalk engine** — extract a `packages/crosswalk-core` ("map entities in source A to a
+  framework B with provenance, confidence, and expert review") consumed by sibling Elyos projects:
+  **oer-everything** (this crosswalk is the index layer over its corpus; co-design so its resources
+  carry our identifiers natively), **teacher-lesson-plans** (plans tagged with CASE GUIDs become
+  discoverable-by-standard), and **quiz-bank-open** (`assesses`-type alignments map items→standards —
+  the highest-value consumer, since assessment alignment is what districts most demand).
+- **rare-cancer-registry-templates** — its crosswalk of local data fields → registry standards
+  (e.g. ICD-O, common data elements) is the *same shape* as standard↔standard mapping; share the engine,
+  the confidence model, and the "judgment not fact + expert sign-off" gate.
+- **CASE/crosswalk MCP server** — expose tools (`resolve_standard`, `search_standards`,
+  `propose_alignment`, `export_case`) so any agent can author/verify alignments against the live
+  registry, which also *enforces* the "no fabricated codes" guardrail (every id is resolved, not invented).
+- **Coverage-ledger-as-a-service** — the negative-space ledger is a fundable signal for OER-authoring
+  orgs and foundations.
+
 ## Open questions
 
 - Which consumer is the first confirmed partner (OER Commons/ISKME, OpenStax, a district/LEA, an
-  LMS)? Their preferred ingest format pins the priority exporter.
-- **NGSS terms:** does Achieve's licence permit referencing NGSS by identifier in an open dataset
-  (almost certainly yes) and is text reproduction definitely out (likely)? NGSS stays deferred until
-  this is confirmed in writing.
-- **CCSS text reproduction:** exactly how much statement text may we reproduce under the CCSS public
-  licence vs. reference-by-identifier only? Default conservative (ID + link) until confirmed.
-- Do we adopt **CASE GUIDs** as primary identity and ASN as fallback, or carry both always?
-  (Leaning: carry both where available; CASE primary for exchange.)
-- Should the crosswalk dataset be **CC0** (max interop) instead of **CC-BY-4.0**? (Leaning CC-BY to
-  preserve provenance/attribution chain; revisit if a consumer needs CC0.)
-- How is **CK-12 (CC-BY-NC)** treated for consumers who may use the crosswalk commercially? The NC
-  policy must resolve this before any CK-12 mapping.
-- What is the minimum **reviewer roster** (subjects × grade bands) needed before M2 scaling so the
-  educator gate is never the bottleneck *and* never skipped?
+  LMS, an Ed-Fi adopter)? Their preferred ingest format pins the priority exporter and which **ingest
+  contract** (Ed-Fi `LearningStandard` vs. schema.org `educationalAlignment`) we build first.
+- **Partner-first vs. self-serve:** is the fastest "delivered" path an OER Commons / Ed-Fi ingest, or a
+  self-serve open release that others fork? This decides M0/M1 sequencing.
+- **NGSS terms (re-evaluated):** given the broad non-profit reproduction right, what are the *exact*
+  binding limits — WestEd trademark use, a commercial-use boundary, attribution form — and does that
+  let us un-defer NGSS text reproduction for a CC-BY non-profit dataset? (Expected yes; confirm in
+  writing at the gate.)
+- **Standard↔standard scope:** do we commit to the association layer now, and if so which first pair
+  (CCSS↔a state, or AU↔England)? This decides whether the project name ("crosswalk") is honest.
+- **Identifier authority:** when a framework has multiple CASE publications/GUIDs, whose GUID is
+  canonical for us, and how do we re-bind on re-publication (GUIDs are minted per-publication)?
+- **CCSS text reproduction:** confirm we may reproduce statement text with the mandated © notice, and
+  enforce the exact notice string as a required field on any record carrying CCSS `statementText`.
+- Should the crosswalk dataset be **CC0** (max interop) instead of **CC-BY-4.0**? Does a target consumer
+  (Ed-Fi/Academic-Benchmarks-adjacent, or OER Commons) need CC0 for frictionless ingest? Revisit if so.
+- How is **CK-12 (CC-BY-NC)** and the broader **use-but-not-adapt (NC/ND)** tier treated for consumers
+  who may use the crosswalk commercially? The NC policy must resolve this before any such mapping.
+- **Reviewer economics:** what is the minutes-per-record cost and the minimum **reviewer roster**
+  (subjects × grade bands) needed before M2 scaling, so the educator gate is never the bottleneck *and*
+  never skipped?
+- **Funded-lane future:** a budget-capped batch proposer could 10× candidate generation — worth a thin
+  spike to size cost-per-candidate, though it remains out of scope for v0.2.0.
 - What counts as a sufficiently "verifiable external reuse event" for the outcome metric?
 
 ## References
 
 - Elyos work rules — `C:\code\elyos\CLAUDE.md`
+- Competitive & improvement analysis (merged into this v0.2) — `COMPETITIVE-ANALYSIS.md`
 - Good Deed Definition + risk tiers — `C:\code\elyos\docs\good-deed-definition.md`
 - Task JSON schema — `C:\code\elyos\packages\schema\src\schemas.ts`
 - Portfolio roadmap — `C:\code\elyos\planning\ROADMAP.md`
@@ -574,6 +797,10 @@ mapping task until it passes the dual licence/terms gate.
 - Common Core State Standards (NGA/CCSSO public licence); Next Generation Science Standards (Achieve)
 - Australian Curriculum (ACARA, CC-BY-4.0); England National Curriculum (Crown copyright, OGL)
 - OER sources: OpenStax, Illustrative Mathematics, EngageNY/Eureka, PhET, Siyavula, LibreTexts, CK-12
+- Landscape: 1EdTech CASE Network (free 50-state ELA/Math registry); Achievement Standards Network
+  (ASN, D2L); Common Standards Project (open standards API); Academic Benchmarks (Instructure/Certica,
+  proprietary correlations); Ed-Fi Alliance (`LearningStandard`); OER Commons/ISKME (Achieve OER
+  rubric); Learning Registry; EdGraph / state DOE catalogs
 
 ---
 
@@ -653,11 +880,12 @@ The 25 improvements below were identified against the first draft and **applied*
 **Reviewer:** Senior staff engineer + TPM (drafting agent), self-review pass.
 **Date:** 2026-06-28 · **Doc version reviewed:** 0.1.0
 
-**Completeness check (PLAN_SPEC 17 sections):** all present and in order — Executive summary;
+**Completeness check (PLAN_SPEC 17 sections + 1 added):** all present and in order — Executive summary;
 Problem & beneficiaries; Goals and non-goals; Success metrics (outcomes); Scope; Solution approach
-& architecture; Data, licensing & compliance; Quality, review & risk gates; Roadmap & milestones;
-Work breakdown; Governance, roles & stakeholders; Dependencies & integrations; Risks & mitigations;
-Security & privacy; Sustainability & maintenance; Open questions; References. ✔
+& architecture; **Competitive landscape & differentiation** (added in v0.2); Data, licensing &
+compliance; Quality, review & risk gates; Roadmap & milestones; Work breakdown; Governance, roles &
+stakeholders; Dependencies & integrations; Risks & mitigations; Security & privacy; Sustainability &
+maintenance; Open questions; References. ✔
 
 **Correctness / guardrail check.**
 - Good-deed criteria: tangible public benefit (teachers/students) ✔; freely available (CC-BY dataset,
@@ -689,3 +917,48 @@ the NC policy; size the minimum reviewer roster before M2. These are tracked in 
 as M0/M1 tasks.
 
 **Sign-off:** Plan is internally consistent, guardrail-compliant, and ready for maintainer review.
+
+## Changelog — v0.2 (analysis merged)
+
+Merged `COMPETITIVE-ANALYSIS.md` into the plan. Surgical/additive; no still-valid v0.1 content removed,
+no guardrails weakened. Key changes:
+
+**Correctness / licensing / standards fixes**
+- **NGSS premise corrected (§1.1).** Copyright is held by the National Academies / NAP (not Achieve);
+  the "NGSS" name/logo is a **WestEd trademark**; NGSS terms grant non-profit education entities a broad
+  reproduce/adapt right. NGSS moved from "deferred — likely no reproduction" to **gated-but-expected-
+  admissible**; binding limits (trademark, commercial-use, attribution) named.
+- **CCSS © notice operationalised (§1.5).** `permitsTextReproduction` plausibly true; the verbatim
+  "© 2010 NGA Center/CCSSO …" notice is now a **required, validator-enforced field** stored in the gate
+  artifact for any record carrying CCSS `statementText`.
+- **CASE primary / ASN legacy (§1.3).** CASE GUID is primary and required-where-available; ASN URI is
+  optional legacy capture, never the gating identifier. Pinned-specs and key-decisions updated.
+- **GUID-stability reality (§1.4).** Stated that CASE GUIDs are minted per-publication; gate records the
+  canonical publication's GUID, re-publication triggers re-resolution; risk row updated.
+- **CC-BY-SA evidence snippets (§1.9b)** clarified — short, attributed, fair-use; no share-alike trigger.
+- **Use-but-not-adapt tier** added for NC/ND-restricted sources (e.g. MIT OpenCourseWare; licence
+  verified per source at the gate) — referenceable but `permitsDerivatives:false`/`commercialUse:false`.
+- **"Judgments, not facts" made machine-visible (§1.7).** `strength`/`coverage`/`aiConfidence`/
+  `reviewerQualification`/`notEndorsement` now carry into every export; `aiConfidence` flagged
+  not-comparable across model versions.
+
+**Strategy / structure integrated**
+- New **Competitive landscape & differentiation** section (CASE Network, ASN, Common Standards Project,
+  Academic Benchmarks, Ed-Fi, OER Commons/ISKME, Khan/IM, Learning Registry, EdGraph) with the gap and
+  the single strongest differentiator: an open, machine-readable, multi-framework crosswalk with
+  per-alignment provenance + confidence + a CASE-format exporter — reviewed proposals, not facts.
+- Added the **`StandardAssociation`** record type + a **vocabulary-mapping table** (our vocab →
+  schema.org `alignmentType` → CASE `CFAssociationType`), making the project a true crosswalk (§1.2, §1.6).
+- Folded **Claude API leverage** into Solution/architecture (candidate proposer, CASE/schema.org
+  generation, coverage/gap analysis, triage assist) with hard guardrails (educator decides; IP
+  human-verified; no fabricated codes; crosswalks are proposals; automation-bias countermeasure).
+- Folded the **ten optimizations** into the roadmap (seed from CASE 50-state registry; ingest contract +
+  sample importer; carry confidence/notEndorsement into exports; review-minutes baseline; link-rot/
+  drift dashboard; un-defer NGSS; standard↔standard layer).
+- Added **Adjacent opportunities** (reusable `crosswalk-core` engine consumed by oer-everything /
+  teacher-lesson-plans / quiz-bank-open; rare-cancer-registry methodology tie; CASE/crosswalk MCP server;
+  coverage-ledger-as-a-service).
+- Merged the analysis's **Open questions** (NGSS limits, association scope, identifier authority, CCSS
+  notice, CC0 vs CC-BY, reviewer economics, partner-first vs self-serve, funded-lane spike).
+
+`TASKS.md` updated surgically in lockstep (see its v0.2 changes).

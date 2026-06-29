@@ -1,6 +1,8 @@
 # TASKS — curriculum-standards-map
 
-> Status: Draft · Version: 0.1.0 · Last updated: 2026-06-28 · Owner: TBD (maintainer) · Lane: donated
+> Status: Draft · Version: 0.2.0 · Last updated: 2026-06-29 · Owner: TBD (maintainer) · Lane: donated
+> v0.2 adds tasks from the merged competitive analysis (StandardAssociation layer, vocab-mapping table,
+> CCSS © notice field, ingest contract + importer, CASE-primary identifiers, NGSS un-defer).
 
 ## How these tasks map to Elyos
 
@@ -19,8 +21,8 @@ Each task below becomes an Elyos **Task JSON** validated against
   medical/legal/safety advice, no PII).
 - `urgent` — boolean; `false` for all current tasks.
 - `deliverable` — `pr | dataset | document | translation`. The **crosswalk itself is a `dataset`**
-  (we author the alignment records, derived from open inputs). Model/templates/policies → `document`;
-  code (validator, exporters, proposer) → `pr`.
+  (we author the alignment records *and* the `StandardAssociation` records, derived from open inputs).
+  Model/templates/policies → `document`; code (validator, exporters, proposer, importer) → `pr`.
 - `tokenEstimate` — `small | medium | large` (Size column).
 - `status` — `open | in-progress | review | delivered | done`; all start `open`.
 - `context`, `objective`, `acceptanceCriteria[]`, `resources[]`, `output` — per task.
@@ -47,7 +49,7 @@ is pre-approved by appearing here.
 | curriculum-standards-map-validator-005 | Schema validator + identifier-resolution checks (CASE GUID / ASN URI) | code | medium | low | pr | model-001 | Technical |
 | curriculum-standards-map-export-006 | schema.org `AlignmentObject` exporter + golden fixtures | code | small | low | pr | model-001 | Technical |
 | curriculum-standards-map-registry-007 | Frameworks registry + OER source registry (licence-classified) | research | small | low | document | gate-002 | Maintainer |
-| curriculum-standards-map-outreach-008 | Consumer/partner outreach + baseline time-to-find measurement | research | small | low | document | — | Steward |
+| curriculum-standards-map-outreach-008 | Consumer/partner outreach + baseline time-to-find & per-record review-minutes measurement | research | small | low | document | — | Steward |
 | curriculum-standards-map-pilot-009 | Pilot slice: ≥50 educator-reviewed alignments (clean framework × CC-BY OER) | data | medium | low | dataset | model-001, gate-002, ncpolicy-003, reviewer-004, validator-005, export-006, registry-007 | Licence/terms, Educator |
 
 **Acceptance criteria — key tasks**
@@ -60,9 +62,19 @@ is pre-approved by appearing here.
         reviewerQualification,reviewedAt,auditedBy}`, `outputLicense`.
   - [ ] Confidence model documented: `strength` (exact/strong/partial/tangential) + `coverage`
         (full/partial); states AI score is advisory and educator `accepted` is the ship signal.
-  - [ ] States deliverable is the mapping, not the content; reference-by-identifier is the default;
-        `statementText` included only where `permitsTextReproduction:true`.
-  - [ ] One worked example record included; `outputLicense: CC-BY-4.0`.
+  - [ ] States deliverable is the mapping, not the content; reference-by-identifier is the default
+        (**CASE GUID primary/required-where-available; ASN URI optional legacy capture**);
+        `statementText` included only where `permitsTextReproduction:true`, with any mandated © notice
+        (e.g. CCSS) as a required field.
+  - [ ] Second record type **`StandardAssociation`** documented (from/to standards + `associationType`
+        `exactMatch|isEquivalentTo|isRelatedTo|isPartOf|supersedes`), reusing the same gates + review;
+        carries `notEndorsement:true` (a reviewed proposal, never an official equivalence claim).
+  - [ ] **Vocabulary-mapping table** documented (our `type`/`strength`/`associationType` → schema.org
+        `alignmentType` → CASE `CFAssociationType`) as the single source the exporters enforce.
+  - [ ] Record-level metadata (`strength`, `coverage`, `aiConfidence`, `reviewerQualification`,
+        `notEndorsement`) is specified to survive into every export; `aiConfidence` noted as not
+        comparable across proposer model versions (record model+version in provenance).
+  - [ ] One worked example of each record type included; `outputLicense: CC-BY-4.0`.
 
 - **gate-002 (dual licence/terms gate)**
   - [ ] OER licence check: PASS only if licence is accepted (CC0/CC-BY/CC-BY-SA, or NC under
@@ -70,9 +82,12 @@ is pre-approved by appearing here.
         and a snapshot (committed copy + SHA-256 + Wayback). Missing/unparseable = FLAG/EXCLUDE.
   - [ ] Framework-terms check: records `permitsReference` and `permitsTextReproduction` per
         framework from cited terms; `permitsReference:false` ⇒ framework EXCLUDED; reproduction only
-        where explicitly permitted.
-  - [ ] Standards skeletons must come from official machine-readable sources (CASE registry /
-        official open data); PDF-scraping copyrighted standards is forbidden.
+        where explicitly permitted, with any **mandated © notice string captured in the artifact**
+        (e.g. the verbatim CCSS "© 2010 NGA Center/CCSSO …" notice). NGSS assessed under the corrected
+        premise (NAP copyright, WestEd trademark, broad non-profit reproduction right).
+  - [ ] Standards skeletons must come from official machine-readable sources — **seeded from the CASE
+        Network 50-state registry** where available — / official open data; PDF-scraping copyrighted
+        standards is forbidden.
   - [ ] Produces a committed PASS/FLAG/EXCLUDE artifact per (OER source × framework) slice.
 
 - **reviewer-004 (secure gate roles)**
@@ -101,7 +116,8 @@ validator (with identifier resolution) and the schema.org exporter green in CI w
 ≥ 50 educator-reviewed alignments for one clean pilot slice, schema-valid and identifier-resolving,
 published as an open CC-BY release with a coverage ledger — delivered to a consumer (evidence
 recorded) or released self-serve with the blocker surfaced; ≥ 1 outreach thread opened; baseline
-time-to-find measured.
+time-to-find **and per-record review-minutes** measured; standards skeleton seeded from the CASE
+Network registry; model includes the `StandardAssociation` type + vocabulary-mapping table.
 
 ---
 
@@ -116,11 +132,25 @@ time-to-find measured.
 | curriculum-standards-map-map-014 | ≥ 250 educator-reviewed alignments across ≥ 2 subjects | data | large | low | dataset | pilot-009, framework-013 | Licence/terms, Educator |
 | curriculum-standards-map-audit-015 | Independent second-reviewer precision audit (sampled) | research | small | low | document | pilot-009, map-014 | Educator (auditor) |
 | curriculum-standards-map-partner-016 | Secure first confirmed consuming partner | research | small | low | document | outreach-008 | Steward |
+| curriculum-standards-map-ingest-032 | Ingest contract + sample importer (Ed-Fi `LearningStandard` + schema.org `educationalAlignment`) | code | small | low | pr | case-011, csv-012 | Technical, Steward |
 
 **Acceptance criteria — key tasks**
 
+- **ingest-032 (ingest contract + sample importer)**
+  - [ ] Documents a tiny "ingest contract" (required columns/fields, identifiers, licence/notice
+        fields) so a consuming partner's lift is near-zero — directly attacks the unsecured-partner /
+        "delivered, not merged" risk.
+  - [ ] Ships one sample importer for **Ed-Fi `LearningStandard`** and one for **schema.org
+        `educationalAlignment`**, each with a golden round-trip fixture; code MIT; CI green; no credentials.
+
 - **case-011 (CASE exporter)** *(pattern also applies to csv-012)*
-  - [ ] Emits valid **CASE v1.1** JSON for framework/standard references (version in `specVersions`).
+  - [ ] Emits valid **CASE v1.1** JSON for framework/standard references **and `StandardAssociation`
+        records** (`CFAssociationType`), version in `specVersions`.
+  - [ ] Applies the **vocabulary-mapping table** from model-001 (our vocab → schema.org `alignmentType`
+        → CASE `CFAssociationType`); confirms the exact CASE association terms against pinned v1.1.
+  - [ ] Record-level `strength`/`coverage`/`aiConfidence`/`reviewerQualification`/`notEndorsement`
+        survive into the export (consumer cannot render a reviewed proposal as authoritative fact); any
+        mandated © notice (CCSS) is emitted with reproduced `statementText`.
   - [ ] Ships committed golden canonical-record → expected-CASE pairs, diffed in CI and validated
         against the pinned CASE schema.
   - [ ] Code MIT; `pnpm build && pnpm test && pnpm lint` green; DCO signed-off; no credentials.
@@ -157,11 +187,19 @@ ingested; precision audit ≥ 95%.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | curriculum-standards-map-ingest-017 | OER ingest under the bounded-access protocol (metadata + short evidence) | code | medium | low | pr | model-001, gate-002 | Technical |
 | curriculum-standards-map-proposer-018 | AI candidate-alignment proposer (evidence + confidence → review queue) | code | large | low | pr | ingest-017, validator-005 | Technical, Educator |
-| curriculum-standards-map-roster-019 | Educator reviewer roster (subjects × grade bands) sized for scale | research | small | low | document | reviewer-004 | Maintainer |
+| curriculum-standards-map-roster-019 | Educator reviewer roster (subjects × grade bands) sized for scale, using the per-record review-minutes baseline | research | small | low | document | reviewer-004 | Maintainer |
 | curriculum-standards-map-map-020 | Scale to ≥ 600 reviewed records cumulatively (proposer-assisted) | data | large | low | dataset | proposer-018, roster-019 | Licence/terms, Educator |
 | curriculum-standards-map-coverage-021 | Coverage ledger: ≥ 60% standards in one grade-band × subject have a reviewed OER | data | small | low | document | map-020 | Maintainer |
+| curriculum-standards-map-assoc-033 | First standard↔standard association batch (e.g. CCSS↔a state, or AU↔England), expert-reviewed | data | medium | low | dataset | model-001, gate-002, map-014 | Licence/terms, Educator |
 
 **Acceptance criteria — key tasks**
+
+- **assoc-033 (standard↔standard association batch)**
+  - [ ] `StandardAssociation` records for a chosen framework pair, each with `associationType`,
+        `strength`, `coverage`, evidence, `aiConfidence`, and **expert review** (`accepted`); both
+        endpoints reference standards by identifier (CASE GUID primary) that resolve in the validator.
+  - [ ] Both frameworks passed `gate-002`; records carry `notEndorsement:true` (reviewed proposals, not
+        official equivalence); CASE/schema.org exports validate; coverage/provenance complete.
 
 - **proposer-018 (AI candidate proposer)**
   - [ ] Emits `(oer, standard)` candidates each with alignment `type`, `aiConfidence`, and a short
@@ -219,10 +257,10 @@ test shows ≥ 50% time-to-find reduction; steward identified for ongoing liaiso
 
 | ID | Title | Type | Size | Risk | Deliverable | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| curriculum-standards-map-ngss-026 | Onboard NGSS once reproduction/reference terms confirmed | research | small | low | document | Blocked on written Achieve terms (Open question) |
+| curriculum-standards-map-ngss-026 | Onboard NGSS once reproduction/reference terms confirmed | research | small | low | document | **Expected admissible** (NAP copyright, WestEd trademark, broad non-profit reproduction right). Gated on written confirmation of the binding limits (trademark, commercial-use, attribution) — corrected from "Achieve copyright / likely no reproduction" |
 | curriculum-standards-map-lms-027 | LMS/OER-repo ingest adapter for a confirmed consumer's format | code | medium | low | pr | Pins to the partner's preferred format |
 | curriculum-standards-map-i18n-028 | Map a non-English-medium framework (domain + language reviewer) | data | large | low | dataset | Widens reach; needs bilingual educator reviewer |
-| curriculum-standards-map-dash-029 | Public coverage + outcome dashboard (reads the outcome ledger) | code | medium | low | pr | Supports success-metric tracking |
+| curriculum-standards-map-dash-029 | Public coverage + outcome dashboard, incl. **link-rot / CASE-GUID-drift** signal (CI-generated) | code | medium | low | pr | Supports success-metric tracking; turns the staleness risk into a visible, fixable, reuse-trust signal |
 | curriculum-standards-map-community-030 | Community contribution workflow under the same dual-gate + audit | design-spec | small | low | document | Scale beyond core team without lowering precision |
 | curriculum-standards-map-funded-031 | Budget-capped funded proposer variant (batch candidate generation) | code | medium | low | pr | Funded lane; would add `fundedBudgetUsd`; out of v0.1.0 scope |
 
@@ -271,7 +309,8 @@ test shows ≥ 50% time-to-find reduction; steward identified for ongoing liaiso
 
 ## Task rollup
 
-- **25 scheduled tasks** across M0–M3 (M0: 9 · M1: 7 · M2: 5 · M3: 4) + **6 backlog** = **31 total**.
+- **27 scheduled tasks** across M0–M3 (M0: 9 · M1: 8 · M2: 6 · M3: 4) + **6 backlog** = **33 total**
+  (v0.2 added `ingest-032` ingest contract + importer and `assoc-033` standard↔standard batch).
 - Deliverables: crosswalk **`dataset`** tasks (the alignment records) are gated behind both the dual
   licence/terms gate and educator review; **`document`** for model/policies/registries/audits;
   **`pr`** for validator/exporters/proposer/refresh.
