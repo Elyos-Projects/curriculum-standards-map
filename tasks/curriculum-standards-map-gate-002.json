@@ -1,0 +1,39 @@
+{
+  "id": "curriculum-standards-map-gate-002",
+  "title": "Dual licence/terms gate checklist (OER licence + framework terms)",
+  "project": "curriculum-standards-map",
+  "type": "design-spec",
+  "lane": "donated",
+  "priority": "high",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "licensing",
+    "governance"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. This task authors the blocking dual licence/terms gate every record passes before shipping.",
+  "objective": "Author the dual licence/terms gate checklist that yields a committed PASS/FLAG/EXCLUDE artifact per (OER source x framework) slice.",
+  "acceptanceCriteria": [
+    "OER licence check: PASS only if the licence is accepted (CC0/CC-BY/CC-BY-SA, or NC under ncpolicy-003) with permitsDerivatives and commercialUse recorded from a cited URL/clause and a snapshot (committed copy + SHA-256 + Wayback); missing/unparseable = FLAG/EXCLUDE.",
+    "Framework-terms check: records permitsReference and permitsTextReproduction per framework from cited terms; permitsReference:false implies the framework is EXCLUDED; text reproduction only where explicitly permitted.",
+    "Standards skeletons must come from official machine-readable sources (CASE registry / official open data); PDF-scraping copyrighted standards is forbidden.",
+    "Produces a committed PASS/FLAG/EXCLUDE artifact per (OER source x framework) slice.",
+    "Output licensed CC-BY-4.0; the commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "docs/gates/dual-licence-terms-gate.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

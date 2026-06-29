@@ -1,0 +1,37 @@
+{
+  "id": "curriculum-standards-map-community-030",
+  "title": "Community contribution workflow under the same dual-gate + audit",
+  "project": "curriculum-standards-map",
+  "type": "design-spec",
+  "lane": "donated",
+  "priority": "low",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "governance"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. Scaling beyond the core team without lowering precision: external contributions pass the same dual gate, educator review and sampled audit.",
+  "objective": "Author the community contribution workflow that holds external contributions to the same dual-gate + educator review + audit.",
+  "acceptanceCriteria": [
+    "Documents a workflow where external contributors submit candidate alignments that pass the same dual licence/terms gate (gate-002) + educator review + sampled precision audit before shipping.",
+    "No contribution bypasses the gates or lowers precision below 95%; reviewer/auditor independence preserved.",
+    "Defines provenance and DCO requirements for contributors.",
+    "Output licensed CC-BY-4.0; the commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "docs/governance/community-contribution-workflow.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

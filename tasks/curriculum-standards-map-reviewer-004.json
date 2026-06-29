@@ -1,0 +1,37 @@
+{
+  "id": "curriculum-standards-map-reviewer-004",
+  "title": "Name/secure the Licence/terms + Educator reviewers (blocking gate roles)",
+  "project": "curriculum-standards-map",
+  "type": "research",
+  "lane": "donated",
+  "priority": "high",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "governance"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. The educator review and licence/terms gates are blocking; this task secures the named humans who fill them.",
+  "objective": "Name and secure the Licence/terms reviewer and Educator reviewer(s), plus the independent auditor for the precision audit.",
+  "acceptanceCriteria": [
+    "A named Licence/terms reviewer who can read CC/OGL/CCSS/ACARA terms and apply ncpolicy-003.",
+    "At least one named Educator reviewer per in-scope subject + grade band, qualification recorded; a second-reviewer/auditor identified for the precision audit.",
+    "Until filled, all tasks stay verifiedNeed:false and no record can pass review; roles recorded in the PLAN governance section.",
+    "Output licensed CC-BY-4.0; the commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "docs/governance/reviewers.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

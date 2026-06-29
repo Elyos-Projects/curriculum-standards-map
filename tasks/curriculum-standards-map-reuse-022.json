@@ -1,0 +1,37 @@
+{
+  "id": "curriculum-standards-map-reuse-022",
+  "title": "Track + verify external reuse events",
+  "project": "curriculum-standards-map",
+  "type": "research",
+  "lane": "donated",
+  "priority": "medium",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "outcomes",
+    "governance"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. Success is outcomes delivered to real beneficiaries; this tracks verifiable external reuse, excluding self-reported use.",
+  "objective": "Track and verify external reuse events of the crosswalk and record them in the outcome ledger.",
+  "acceptanceCriteria": [
+    ">= 2 verifiable external reuse events recorded (ingestion commit/permalink, catalog page, written confirmation, or third-party fork/citation); self-reported use excluded.",
+    "Each event has a verifiable artifact link recorded in the outcome ledger.",
+    "Output licensed CC-BY-4.0; the commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "docs/outcomes/reuse-events.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

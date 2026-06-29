@@ -1,0 +1,38 @@
+{
+  "id": "curriculum-standards-map-lms-027",
+  "title": "LMS/OER-repo ingest adapter for a confirmed consumer's format",
+  "project": "curriculum-standards-map",
+  "type": "code",
+  "lane": "donated",
+  "priority": "low",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "interop",
+    "tooling"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "pr",
+  "tokenEstimate": "medium",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. An adapter pinned to a confirmed consumer's preferred format; built only once a named consumer commits, so verifiedNeed stays false until then.",
+  "objective": "Build an LMS/OER-repo ingest adapter that emits crosswalk records in a confirmed consumer's preferred format.",
+  "acceptanceCriteria": [
+    "Adapter exports/ingests crosswalk records in a confirmed consumer's preferred format (pins to partner-016's recorded format).",
+    "Round-trips identifiers without loss; validated against the consumer's spec with fixtures.",
+    "verifiedNeed flips to true only when a named consumer commits; until then it is representative/blocked.",
+    "Code MIT; pnpm build && pnpm test && pnpm lint green; the commit is DCO signed-off; no credentials or secrets committed."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "src/adapters/lms/",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "MIT"
+}

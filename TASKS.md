@@ -318,3 +318,53 @@ test shows ≥ 50% time-to-find reduction; steward identified for ongoing liaiso
 - Output licences: **CC-BY-4.0** (dataset/docs), **MIT** (code).
 - Hard gates, never skipped: (1) dual licence/terms (`gate-002`), (2) educator review (every
   record), with a blind second-reviewer precision audit (`audit-015`) preserving ≥ 95% precision.
+
+---
+
+## Generated task index
+
+Every table row above is now backed by a schema-valid machine-readable `tasks/<id>.json` (validated
+against `packages/schema`; the Elyos CLI executes the JSON, not this table). The **full per-task
+acceptance criteria live in each `tasks/<id>.json`** and reuse the checkable bullets from the
+"Acceptance criteria — key tasks" sections above; the JSONs are authoritative for execution.
+
+**Fan-out:** none — this backlog already enumerates discrete tasks. The mapping milestones
+(`pilot-009`, `map-014`, `map-020`, `scale-025`) are **count-based** targets, not per-item fan-out,
+and framework onboarding is already split into discrete rows (`framework-013`, `ngss-026`,
+`i18n-028`). No languages, datasets, frameworks, or beneficiaries were fabricated. `funded-031` stays
+`lane: donated` because PLAN.md defines no escrow/budget cap yet (it is out of v0.1.0 scope); it flips
+to `funded` with `fundedBudgetUsd` set only when scoped.
+
+| ID | JSON |
+| --- | --- |
+| curriculum-standards-map-model-001 | `tasks/curriculum-standards-map-model-001.json` (seed) |
+| curriculum-standards-map-gate-002 | `tasks/curriculum-standards-map-gate-002.json` |
+| curriculum-standards-map-ncpolicy-003 | `tasks/curriculum-standards-map-ncpolicy-003.json` |
+| curriculum-standards-map-reviewer-004 | `tasks/curriculum-standards-map-reviewer-004.json` |
+| curriculum-standards-map-validator-005 | `tasks/curriculum-standards-map-validator-005.json` |
+| curriculum-standards-map-export-006 | `tasks/curriculum-standards-map-export-006.json` |
+| curriculum-standards-map-registry-007 | `tasks/curriculum-standards-map-registry-007.json` |
+| curriculum-standards-map-outreach-008 | `tasks/curriculum-standards-map-outreach-008.json` |
+| curriculum-standards-map-pilot-009 | `tasks/curriculum-standards-map-pilot-009.json` |
+| curriculum-standards-map-snapshot-010 | `tasks/curriculum-standards-map-snapshot-010.json` |
+| curriculum-standards-map-case-011 | `tasks/curriculum-standards-map-case-011.json` |
+| curriculum-standards-map-csv-012 | `tasks/curriculum-standards-map-csv-012.json` |
+| curriculum-standards-map-framework-013 | `tasks/curriculum-standards-map-framework-013.json` |
+| curriculum-standards-map-map-014 | `tasks/curriculum-standards-map-map-014.json` |
+| curriculum-standards-map-audit-015 | `tasks/curriculum-standards-map-audit-015.json` |
+| curriculum-standards-map-partner-016 | `tasks/curriculum-standards-map-partner-016.json` |
+| curriculum-standards-map-ingest-017 | `tasks/curriculum-standards-map-ingest-017.json` |
+| curriculum-standards-map-proposer-018 | `tasks/curriculum-standards-map-proposer-018.json` |
+| curriculum-standards-map-roster-019 | `tasks/curriculum-standards-map-roster-019.json` |
+| curriculum-standards-map-map-020 | `tasks/curriculum-standards-map-map-020.json` |
+| curriculum-standards-map-coverage-021 | `tasks/curriculum-standards-map-coverage-021.json` |
+| curriculum-standards-map-reuse-022 | `tasks/curriculum-standards-map-reuse-022.json` |
+| curriculum-standards-map-refresh-023 | `tasks/curriculum-standards-map-refresh-023.json` |
+| curriculum-standards-map-usability-024 | `tasks/curriculum-standards-map-usability-024.json` |
+| curriculum-standards-map-scale-025 | `tasks/curriculum-standards-map-scale-025.json` |
+| curriculum-standards-map-ngss-026 | `tasks/curriculum-standards-map-ngss-026.json` |
+| curriculum-standards-map-lms-027 | `tasks/curriculum-standards-map-lms-027.json` |
+| curriculum-standards-map-i18n-028 | `tasks/curriculum-standards-map-i18n-028.json` |
+| curriculum-standards-map-dash-029 | `tasks/curriculum-standards-map-dash-029.json` |
+| curriculum-standards-map-community-030 | `tasks/curriculum-standards-map-community-030.json` |
+| curriculum-standards-map-funded-031 | `tasks/curriculum-standards-map-funded-031.json` |

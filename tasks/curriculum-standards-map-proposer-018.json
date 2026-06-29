@@ -1,0 +1,38 @@
+{
+  "id": "curriculum-standards-map-proposer-018",
+  "title": "AI candidate-alignment proposer (evidence + confidence -> review queue)",
+  "project": "curriculum-standards-map",
+  "type": "code",
+  "lane": "donated",
+  "priority": "medium",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "ai",
+    "tooling"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "pr",
+  "tokenEstimate": "large",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. The AI proposer accelerates candidate generation but never ships a record: educator review remains the ship signal, guarding against automation bias.",
+  "objective": "Build the AI candidate-alignment proposer that feeds a review queue with evidence + confidence and never auto-publishes.",
+  "acceptanceCriteria": [
+    "Emits (oer, standard) candidates each with alignment type, aiConfidence and a short evidence rationale into a review queue; never auto-publishes a record.",
+    "Output is clearly labelled 'candidate - requires educator review'; the reviewer must record evidence/decision (guards against automation bias).",
+    "Measured reviewer throughput (records/hour) improves vs. the manual M0/M1 baseline without precision dropping below 95% on the next audit.",
+    "Bounded-access protocol respected (no rehosted OER corpus); Code MIT; pnpm build && pnpm test && pnpm lint green; the commit is DCO signed-off; no credentials or secrets committed."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "src/proposer/",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "MIT"
+}

@@ -1,0 +1,38 @@
+{
+  "id": "curriculum-standards-map-partner-016",
+  "title": "Secure first confirmed consuming partner",
+  "project": "curriculum-standards-map",
+  "type": "research",
+  "lane": "donated",
+  "priority": "high",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "governance",
+    "outcomes"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. Verified need depends on a real consumer; this secures the first named repository/district/platform that will ingest the crosswalk.",
+  "objective": "Secure the first confirmed consuming partner and record their preferred ingest format.",
+  "acceptanceCriteria": [
+    "A named repository/district/platform confirms it will ingest or publish the crosswalk records.",
+    "Preferred ingest format recorded (pins exporter priority); contribution mechanism documented.",
+    "Tasks for that consumer updated to verifiedNeed:true with requestor set.",
+    "Output licensed CC-BY-4.0; the commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "docs/outreach/first-consumer.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

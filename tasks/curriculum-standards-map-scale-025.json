@@ -1,0 +1,36 @@
+{
+  "id": "curriculum-standards-map-scale-025",
+  "title": "Reach >= 1,000 reviewed records (>= 2 frameworks, >= 2 subjects)",
+  "project": "curriculum-standards-map",
+  "type": "data",
+  "lane": "donated",
+  "priority": "medium",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "data-quality"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "dataset",
+  "tokenEstimate": "large",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. The M3 scale target, sustaining precision and provenance while reaching a thousand reviewed records.",
+  "objective": "Reach >= 1,000 cumulative educator-reviewed records across >= 2 frameworks and >= 2 subjects, delivered to a consumer.",
+  "acceptanceCriteria": [
+    ">= 1,000 records cumulatively across >= 2 frameworks and >= 2 subjects, all educator-accepted with evidence; gate + provenance complete.",
+    "Precision audit re-run and >= 95%; regressions halt scaling until fixed.",
+    "All identifiers resolve; exports validate; coverage ledger updated; delivered to a consumer."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "output/scale-025/alignments.json",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

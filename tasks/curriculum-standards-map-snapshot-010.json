@@ -1,0 +1,37 @@
+{
+  "id": "curriculum-standards-map-snapshot-010",
+  "title": "Licence/terms snapshot capture in provenance flow",
+  "project": "curriculum-standards-map",
+  "type": "code",
+  "lane": "donated",
+  "priority": "medium",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "licensing",
+    "tooling"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "pr",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. Provenance is part of the committed deliverable; an unprovenanced record is invalid. This automates capturing licence/terms snapshots.",
+  "objective": "Add licence/terms snapshot capture (committed copy + SHA-256 + Wayback) to the provenance flow.",
+  "acceptanceCriteria": [
+    "Captures a snapshot (committed copy + SHA-256 + Wayback/timestamp) of each OER licence page and each framework-terms page at record time, stored in license.snapshotRef / frameworkTerms.ref.",
+    "Snapshot is re-verifiable: the stored hash matches the committed copy; a missing snapshot blocks the record at gate-002.",
+    "Code MIT; pnpm build && pnpm test && pnpm lint green; the commit is DCO signed-off; no credentials or secrets committed."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "src/provenance/snapshot/",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "MIT"
+}
