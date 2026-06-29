@@ -1,0 +1,34 @@
+{
+  "id": "curriculum-standards-map-model-001",
+  "title": "Alignment data model + authoring template (canonical AlignmentRecord)",
+  "project": "curriculum-standards-map",
+  "type": "writing",
+  "lane": "donated",
+  "priority": "high",
+  "domain": ["education", "oer", "open-standards", "curriculum"],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed alignment records linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Before mapping any slice, the project needs one canonical AlignmentRecord model and authoring template that every export (CSV, JSON, schema.org AlignmentObject, CASE) is a projection of. The deliverable is the mapping, not the content: we link to OER at source and reference standards by identifier.",
+  "objective": "Create the canonical AlignmentRecord data model and the authoring template that every per-slice mapping task and exporter will use.",
+  "acceptanceCriteria": [
+    "Canonical AlignmentRecord documents all fields: oer {id, title, url, publisher, license {id, url, permitsDerivatives, commercialUse, snapshotRef}, granularity, subject, gradeLevels[], provenance {retrievedAt, version}}, standard {frameworkId, statementId, caseGuid, asnUri, frameworkTerms {license, permitsReference, permitsTextReproduction, ref}}, alignment {type, strength, coverage, evidence, aiConfidence}, review {status, reviewedBy, reviewerQualification, reviewedAt, auditedBy}, outputLicense.",
+    "Confidence model documented: strength (exact/strong/partial/tangential) and coverage (full/partial); states explicitly that aiConfidence is advisory and the ship signal is educator review.status=accepted.",
+    "Template states the deliverable is the mapping not the content, that standards are referenced by identifier by default, and that statementText is included only where frameworkTerms.permitsTextReproduction is true.",
+    "At least one fully worked example AlignmentRecord is included to guide contributors.",
+    "Crosswalk/template output licensed CC-BY-4.0; any committed tooling passes pnpm build && pnpm test && pnpm lint and the commit is DCO signed-off."
+  ],
+  "resources": [
+    "C:\\code\\elyos\\planning\\projects\\curriculum-standards-map\\PLAN.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts",
+    "1EdTech CASE v1.1 specification",
+    "Achievement Standards Network (ASN) URIs",
+    "schema.org AlignmentObject / LearningResource; LRMI vocabulary"
+  ],
+  "output": "A canonical AlignmentRecord data-model definition plus a Markdown authoring template, committed to the project repo and ready for reuse by per-slice mapping tasks and exporters.",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}
