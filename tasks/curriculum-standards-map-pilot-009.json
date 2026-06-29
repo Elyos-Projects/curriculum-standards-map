@@ -1,0 +1,40 @@
+{
+  "id": "curriculum-standards-map-pilot-009",
+  "title": "Pilot slice: >= 50 educator-reviewed alignments (clean framework x CC-BY OER)",
+  "project": "curriculum-standards-map",
+  "type": "data",
+  "lane": "donated",
+  "priority": "high",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "data-quality",
+    "licensing"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "dataset",
+  "tokenEstimate": "medium",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. This is the end-to-end pilot proving the model, gates, exporters and review pipeline on one licence-clean slice.",
+  "objective": "Produce >= 50 educator-reviewed, schema-valid AlignmentRecords for one licence-clean pilot slice, published as an open CC-BY release with a coverage ledger.",
+  "acceptanceCriteria": [
+    "Slice chosen licence-clean on both sides with machine-readable identifiers (e.g. Australian Curriculum (CC-BY) or England NC (OGL) x a CC-BY OER for one subject/grade band).",
+    "Slice passed gate-002 (OER licence + framework terms) with the artifact committed.",
+    ">= 50 alignment records produced as candidates with evidence + confidence, then educator-reviewed and accepted; each record validates against the schema and every CASE GUID / ASN URI resolves.",
+    "Records reference standards by identifier; statementText present only where permitted.",
+    "Provenance recorded both sides (OER source/version/licence-snapshot; framework version/terms).",
+    "Published as an open CC-BY release with a coverage ledger; delivered to a consumer with the Steward's delivery-evidence artifact if one materialises, else released self-serve with the blocker surfaced; verifiedNeed flips to true only on confirmed consumer use."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "output/pilot-009/alignments.json",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "curriculum-standards-map-coverage-021",
+  "title": "Coverage ledger: >= 60% standards in one grade-band x subject have a reviewed OER",
+  "project": "curriculum-standards-map",
+  "type": "data",
+  "lane": "donated",
+  "priority": "medium",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "data-quality",
+    "outcomes"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. The coverage ledger turns the record set into an outcome metric: what fraction of a slice's standards now have a reviewed aligned OER.",
+  "objective": "Produce the coverage ledger showing >= 60% of standards in one grade-band x subject have >= 1 reviewed aligned OER.",
+  "acceptanceCriteria": [
+    "Coverage ledger computes, for at least one grade-band x subject, the percentage of standards with >= 1 reviewed aligned OER and records >= 60%.",
+    "Ledger is regenerable from the record set; method and denominator (standard count) documented.",
+    "Published with the dataset release; Output licensed CC-BY-4.0; the commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "output/coverage-ledger.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

@@ -1,0 +1,35 @@
+{
+  "id": "curriculum-standards-map-usability-024",
+  "title": "Usability test: >= 50% time-to-find reduction vs. baseline",
+  "project": "curriculum-standards-map",
+  "type": "research",
+  "lane": "donated",
+  "priority": "medium",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "outcomes"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. The headline benefit is teachers finding aligned OER faster; this measures the reduction against the M0 baseline with consented volunteers.",
+  "objective": "Run a consented usability test showing >= 50% time-to-find reduction vs. the M0 baseline.",
+  "acceptanceCriteria": [
+    "Small consented usability test with volunteer educators; no PII retained beyond aggregate timings; >= 50% reduction vs. the M0 baseline recorded with method + sample size.",
+    "Result recorded in the outcome ledger; Output licensed CC-BY-4.0; the commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "docs/outcomes/usability-test.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

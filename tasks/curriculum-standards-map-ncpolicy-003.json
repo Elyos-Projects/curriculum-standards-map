@@ -1,0 +1,39 @@
+{
+  "id": "curriculum-standards-map-ncpolicy-003",
+  "title": "NC (CC-BY-NC) acceptance policy for OER + downstream-commercial caveat",
+  "project": "curriculum-standards-map",
+  "type": "design-spec",
+  "lane": "donated",
+  "priority": "high",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "licensing",
+    "governance"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. This policy governs when a NonCommercial-licensed OER may be mapped and how the commercial caveat propagates downstream.",
+  "objective": "Author the acceptance policy for CC-BY-NC (and other NonCommercial) OER and the downstream-commercial caveat carried on derived records.",
+  "acceptanceCriteria": [
+    "Documents when an NC-licensed OER may be mapped, recording permitsDerivatives and commercialUse=false from a cited clause + snapshot, consistent with gate-002.",
+    "States the downstream-commercial caveat on every record/export derived from an NC source so downstream reusers know the referenced OER forbids commercial reuse.",
+    "Clarifies that the crosswalk record's outputLicense (CC-BY-4.0) does not relicense the referenced OER: the OER keeps its NC terms; the mapping is the CC-BY artefact.",
+    "Cross-references gate-002 so the licence gate applies the NC policy consistently.",
+    "Output licensed CC-BY-4.0; the commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "docs/policies/nc-acceptance-policy.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

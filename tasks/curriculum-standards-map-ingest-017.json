@@ -1,0 +1,38 @@
+{
+  "id": "curriculum-standards-map-ingest-017",
+  "title": "OER ingest under the bounded-access protocol (metadata + short evidence)",
+  "project": "curriculum-standards-map",
+  "type": "code",
+  "lane": "donated",
+  "priority": "medium",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "tooling",
+    "licensing"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "pr",
+  "tokenEstimate": "medium",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. OER is referenced at source, never rehosted; ingest captures only metadata and short evidence under a bounded-access protocol.",
+  "objective": "Build OER ingest that captures metadata and short evidence excerpts under the bounded-access protocol without rehosting OER corpora.",
+  "acceptanceCriteria": [
+    "Ingests OER metadata and short evidence excerpts only under the bounded-access protocol; does NOT rehost or mirror full OER corpora.",
+    "Records provenance (retrievedAt, version, source url) and respects each source's access terms.",
+    "Short evidence excerpts stay within fair-use limits and only where framework/OER terms permit reproduction.",
+    "Code MIT; pnpm build && pnpm test && pnpm lint green; the commit is DCO signed-off; no credentials or secrets committed."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "src/ingest/",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "MIT"
+}

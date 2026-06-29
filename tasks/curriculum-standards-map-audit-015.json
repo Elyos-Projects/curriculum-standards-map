@@ -1,0 +1,37 @@
+{
+  "id": "curriculum-standards-map-audit-015",
+  "title": "Independent second-reviewer precision audit (sampled)",
+  "project": "curriculum-standards-map",
+  "type": "research",
+  "lane": "donated",
+  "priority": "high",
+  "domain": [
+    "education",
+    "oer",
+    "open-standards",
+    "curriculum",
+    "data-quality",
+    "governance"
+  ],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID / ASN URI), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. A blind second-reviewer audit guards precision; it is the independent check that shipped records are actually correct.",
+  "objective": "Run an independent second-reviewer precision audit on a random sample of shipped records and record the result.",
+  "acceptanceCriteria": [
+    "An independent educator (not the original reviewer) re-checks a random sample of shipped records; precision (correct / sampled) >= 95% is recorded; misses become needs-fix records.",
+    "Audit method + sample size + result committed to the outcome ledger.",
+    "Output licensed CC-BY-4.0; the commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md",
+    "TASKS.md",
+    "C:\\code\\elyos\\packages\\schema\\src\\schemas.ts"
+  ],
+  "output": "docs/audits/precision-audit-m1.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}
