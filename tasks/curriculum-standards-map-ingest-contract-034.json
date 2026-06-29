@@ -1,0 +1,35 @@
+{
+  "id": "curriculum-standards-map-ingest-contract-034",
+  "title": "Consumer ingest contract + sample importer (Ed-Fi LearningStandard + schema.org educationalAlignment)",
+  "project": "curriculum-standards-map",
+  "type": "code",
+  "lane": "donated",
+  "priority": "medium",
+  "domain": ["education", "oer", "open-standards", "curriculum", "interop", "tooling"],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "pr",
+  "tokenEstimate": "medium",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable identifier (CASE GUID primary / ASN URI optional). Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. PLAN.md v0.2 adds an M1 optimization: ship a tiny ingest contract + sample importer so a consuming partner's integration lift is near-zero — directly attacking the unsecured-partner / 'delivered, not merged' risk. The two target formats are Ed-Fi LearningStandard and schema.org educationalAlignment. confidence, coverage, and notEndorsement must survive into every export so downstream systems cannot silently treat reviewed proposals as authoritative fact.",
+  "objective": "Build a documented ingest contract and sample importer for at least one consumer format (Ed-Fi LearningStandard and/or schema.org educationalAlignment), preserving alignment provenance metadata (confidence, coverage, notEndorsement) in the consumer record.",
+  "acceptanceCriteria": [
+    "Ingest contract document specifies: the canonical field mapping from AlignmentRecord (and StandardAssociation where applicable) to the consumer format, the minimum required fields a consumer must accept, and how confidence/coverage/notEndorsement are carried so a downstream system cannot silently treat a reviewed proposal as authoritative fact.",
+    "Sample importer for Ed-Fi LearningStandard and/or schema.org educationalAlignment reads canonical AlignmentRecord JSON and emits a valid consumer-format record; at least one of the two formats is fully implemented.",
+    "Emitted records validated against the target format schema (Ed-Fi or schema.org); test fixtures committed (canonical record → expected consumer-format output) and diffed in CI.",
+    "notEndorsement flag and aiConfidence are preserved in the consumer output; the importer must not drop or silently flatten them.",
+    "Code MIT; pnpm build && pnpm test && pnpm lint green; commit is DCO signed-off; no credentials or secrets committed."
+  ],
+  "resources": [
+    "PLAN.md (v0.2 — ingest contract + sample importer M1 optimization, confidence/notEndorsement in every export)",
+    "Ed-Fi Alliance LearningStandard spec (https://techdocs.ed-fi.org)",
+    "schema.org educationalAlignment / AlignmentObject / LearningResource",
+    "tasks/curriculum-standards-map-model-001.json",
+    "tasks/curriculum-standards-map-export-006.json",
+    "tasks/curriculum-standards-map-case-011.json"
+  ],
+  "output": "src/importers/ (docs/ingest-contract.md + sample importer source)",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "MIT"
+}

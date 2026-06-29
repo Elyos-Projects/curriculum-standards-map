@@ -1,0 +1,33 @@
+{
+  "id": "curriculum-standards-map-case-seed-033",
+  "title": "Seed standards skeletons from CASE Network 50-state ELA/Math registry",
+  "project": "curriculum-standards-map",
+  "type": "data",
+  "lane": "donated",
+  "priority": "high",
+  "domain": ["education", "open-standards", "curriculum", "interop", "data-quality"],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "dataset",
+  "tokenEstimate": "medium",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed AlignmentRecords linking OER to standards by stable CASE GUID (primary) / ASN URI (optional legacy), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record. PLAN.md v0.2 makes CASE GUID the primary required identifier and adds M0 exit criterion #8: the standards skeleton for the pilot must be seeded from the CASE Network's free authenticated 50-state ELA/Math registry (or official open data) — never by scraping copyrighted PDFs. CASE GUIDs are minted per-publication, so the gate must record which publication's GUIDs are canonical.",
+  "objective": "Pull the pilot-slice framework's standards skeleton from the CASE Network 50-state ELA/Math registry (or the relevant official CASE/open-data source), validate GUID resolution, and commit the skeleton as the authoritative identifier source for alignment tasks.",
+  "acceptanceCriteria": [
+    "Standards skeleton for at least one pilot-slice framework (e.g. Australian Curriculum or England National Curriculum) fetched from the official CASE Network registry or official government open-data source — not from PDF scraping or unofficial mirrors.",
+    "Each standard entry in the skeleton carries frameworkId, statementId (code), caseGuid, and optionally asnUri; every caseGuid resolves against the official CASE Network source at retrieval time.",
+    "Gate artifact committed to docs/gates/ records: the framework name and version, the CASE publication whose GUIDs are treated as canonical (since GUIDs are minted per-publication), the retrieval date, and the authoritative source URL; any framework without available CASE GUIDs documents the fallback (statementId + framework version).",
+    "If a framework has no CASE GUID in the registry, the fallback identifier strategy is documented and flagged; ASN URI captured where present as optional legacy metadata, never the primary gating identifier.",
+    "Skeleton committed under the framework's applicable open licence (OGL / CC-BY as applicable per gate-002); outputLicense recorded per entry; commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md (v0.2 — identifier resolution, CASE primary/ASN-optional, GUID-stability reality, M0 exit criterion #8)",
+    "1EdTech CASE Network free 50-state ELA/Math registry (https://casenetwork.imsglobal.org)",
+    "tasks/curriculum-standards-map-registry-007.json",
+    "tasks/curriculum-standards-map-gate-002.json"
+  ],
+  "output": "data/skeletons/<frameworkId>/standards-skeleton.json + docs/gates/<frameworkId>-case-seed-gate.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

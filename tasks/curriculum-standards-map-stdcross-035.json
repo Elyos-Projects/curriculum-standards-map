@@ -1,0 +1,34 @@
+{
+  "id": "curriculum-standards-map-stdcross-035",
+  "title": "First standard↔standard association batch for expert review (crosswalk layer pilot)",
+  "project": "curriculum-standards-map",
+  "type": "data",
+  "lane": "donated",
+  "priority": "medium",
+  "domain": ["education", "oer", "open-standards", "curriculum", "data-quality"],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "dataset",
+  "tokenEstimate": "medium",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk with two record types: AlignmentRecord (OER↔standard) and StandardAssociation (standard↔standard). Two hard gates never skip: the dual licence/terms gate (gate-002) and expert review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. PLAN.md v0.2 adds an M2 deliverable: stand up the first standard↔standard association batch for expert review alongside the scaled OER alignments. Every StandardAssociation is an expert-reviewed proposal (notEndorsement:true) under the same dual gate and review model as AlignmentRecords — never an authoritative equivalence claim. The association layer is the project's hardest-to-copy differentiator: Academic Benchmarks sells these correlations commercially; this dataset opens them.",
+  "objective": "Produce the first batch of standard↔standard StandardAssociation candidates for one framework pair, pass them through expert review under the dual gate, and publish the accepted associations as a CC-BY dataset.",
+  "acceptanceCriteria": [
+    "Framework pair chosen and passed gate-002 (framework terms confirmed for both frameworks, both permitsReference:true); pair selection documented with rationale (e.g. CCSS↔a state standard or Australian NC↔England NC for one subject/grade band).",
+    "Each StandardAssociation candidate carries: from/to standard references (frameworkId, statementId, caseGuid), associationType (exactMatch | isEquivalentTo | isRelatedTo | isPartOf | supersedes), strength, coverage, evidence, aiConfidence, notEndorsement:true.",
+    "All candidate associations pass through expert review by a qualified reviewer with expertise in both frameworks; review.status:accepted is the ship signal — no AI-proposed association ships without expert sign-off.",
+    "Every caseGuid resolves against the official CASE Network source; all records validate against the StandardAssociation schema (depends on stdassoc-032).",
+    "Published as a CC-BY-4.0 open dataset with a gate artifact and a provenance record; notEndorsement:true is present in every exported record; commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md (v0.2 — StandardAssociation record type, M2 standard↔standard batch, hard guardrails, competitive differentiation)",
+    "tasks/curriculum-standards-map-stdassoc-032.json",
+    "tasks/curriculum-standards-map-gate-002.json",
+    "tasks/curriculum-standards-map-validator-005.json",
+    "tasks/curriculum-standards-map-map-020.json"
+  ],
+  "output": "output/stdcross-035/standard-associations.json (accepted StandardAssociation records, CC-BY-4.0) + docs/gates/stdcross-035-gate.md",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}

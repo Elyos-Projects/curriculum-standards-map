@@ -1,0 +1,33 @@
+{
+  "id": "curriculum-standards-map-drift-dash-036",
+  "title": "Link-rot / GUID-drift CI dashboard (OER URL + CASE GUID resolver, generated in CI)",
+  "project": "curriculum-standards-map",
+  "type": "code",
+  "lane": "donated",
+  "priority": "low",
+  "domain": ["education", "oer", "open-standards", "curriculum", "tooling", "data-quality"],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "pr",
+  "tokenEstimate": "medium",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed alignment records linking OER to standards by stable CASE GUID (primary) / ASN URI (optional legacy). Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record. PLAN.md v0.2 adds an M3 optimization: a public link-rot / GUID-drift dashboard generated in CI that checks OER URL resolution and CASE GUID resolution for every shipped record. CASE GUIDs are minted per-publication, so framework re-publication can mint new GUIDs and old ones may cease resolving; OER URLs drift too. The refresh-023 task detects and flags staleness; this task adds a publicly visible CI-generated dashboard that turns staleness into a visible, fixable, and trust-signalling metric for downstream consumers.",
+  "objective": "Build a CI-generated public dashboard that checks OER URL and CASE GUID resolution for every shipped record, surfacing link-rot and GUID-drift as a visible reuse-trust signal.",
+  "acceptanceCriteria": [
+    "CI job checks every OER URL in shipped AlignmentRecords (HTTP GET; records 200/redirect/4xx/5xx per URL + date) and resolves every CASE GUID against the official CASE Network source; results written as a machine-readable artifact.",
+    "Dashboard generated as a static artifact in CI and published publicly; displays per-record resolution status, a summary count of live/stale/broken links, last-checked date, and a GUID-drift event log.",
+    "GUID-drift detected: when a CASE GUID that previously resolved no longer resolves, the dashboard flags it as a drift event and links to the re-resolution task pattern (consistent with the gate artifact that records the canonical publication's GUIDs).",
+    "Dashboard reads committed record data only; it does not store OER content or reproduce copyrighted standards text; no PII.",
+    "Code MIT; pnpm build && pnpm test && pnpm lint green; commit is DCO signed-off; no credentials or secrets committed."
+  ],
+  "resources": [
+    "PLAN.md (v0.2 — link-rot/GUID-drift dashboard M3 optimization, GUID-stability reality, risk row update)",
+    "tasks/curriculum-standards-map-refresh-023.json",
+    "tasks/curriculum-standards-map-dash-029.json",
+    "tasks/curriculum-standards-map-case-seed-033.json"
+  ],
+  "output": "src/drift-dashboard/ (CI job + static dashboard generator)",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "MIT"
+}

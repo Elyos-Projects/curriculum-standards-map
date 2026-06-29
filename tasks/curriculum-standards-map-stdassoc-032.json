@@ -1,0 +1,33 @@
+{
+  "id": "curriculum-standards-map-stdassoc-032",
+  "title": "StandardAssociation data model + vocabulary-mapping table (standard↔standard crosswalk layer)",
+  "project": "curriculum-standards-map",
+  "type": "writing",
+  "lane": "donated",
+  "priority": "high",
+  "domain": ["education", "oer", "open-standards", "curriculum", "interop"],
+  "riskTier": "low",
+  "urgent": false,
+  "deliverable": "document",
+  "tokenEstimate": "small",
+  "status": "open",
+  "context": "OER are abundant and free but are not indexed against the curriculum standards that govern what teachers must teach, so teachers cannot find the free resource aligned to a given standard. This project builds an open crosswalk of educator-reviewed alignment records linking OER to standards by stable identifier (CASE GUID primary / ASN URI optional), not by reproducing copyrighted standards text. Two hard gates never skip: the dual licence/terms gate (gate-002) and educator review of every record, with a blind second-reviewer precision audit holding precision at >= 95%. PLAN.md v0.2 adds a second record type — the StandardAssociation (standard↔standard crosswalk layer) — that links a standard in one framework to a related, equivalent, or superseding standard in another, under the same dual gate and review. A vocabulary-mapping table (our type/associationType → schema.org alignmentType → CASE CFAssociationType) is also required so the four export formats never diverge semantically. Both are M0 exit criteria #1 in the v0.2 plan.",
+  "objective": "Create the canonical StandardAssociation data model, authoring template, and vocabulary-mapping table that the standard↔standard crosswalk layer and all exporters will use.",
+  "acceptanceCriteria": [
+    "Canonical StandardAssociation documents all fields: from {frameworkId, statementId, caseGuid, asnUri, frameworkTerms {license, permitsReference, permitsTextReproduction, ref}}, to {frameworkId, statementId, caseGuid, asnUri, frameworkTerms {...}}, associationType (exactMatch | isEquivalentTo | isRelatedTo | isPartOf | supersedes), strength, coverage, evidence, aiConfidence, review {status, reviewedBy, reviewerQualification, reviewedAt, auditedBy}, notEndorsement (always true — a reviewed proposal, never authoritative equivalence), outputLicense.",
+    "Vocabulary-mapping table published and treated as the single source of truth for all exporters: maps our type/associationType to schema.org alignmentType and CASE CFAssociationType v1.1, confirmed against the pinned CASE v1.1 vocabulary so the four export formats (CSV, JSON, schema.org, CASE) never diverge semantically.",
+    "Template states that every StandardAssociation is an expert-reviewed proposal carrying notEndorsement:true — never an assertion of official equivalence — and that CASE GUID is the primary identifier required where one exists.",
+    "strength, coverage, aiConfidence, reviewerQualification, and notEndorsement carry into every export (CASE/schema.org/CSV projections), not only the dataset-level disclaimer, so a downstream consumer cannot silently render a proposal as authoritative fact.",
+    "At least one fully worked example StandardAssociation is included (e.g. CCSS↔a state framework or Australian Curriculum↔England NC for one subject/grade band); outputLicense: CC-BY-4.0; commit is DCO signed-off."
+  ],
+  "resources": [
+    "PLAN.md (v0.2 — StandardAssociation record type, vocabulary-mapping table, key decisions)",
+    "tasks/curriculum-standards-map-model-001.json",
+    "1EdTech CASE v1.1 specification (CFAssociationType vocabulary)",
+    "schema.org AlignmentObject / alignmentType vocabulary"
+  ],
+  "output": "docs/model/standard-association.md (schema + authoring template + vocabulary-mapping table)",
+  "requestor": "TO BE SECURED",
+  "verifiedNeed": false,
+  "outputLicense": "CC-BY-4.0"
+}
